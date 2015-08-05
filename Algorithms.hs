@@ -2,8 +2,8 @@ module Algorithms where
 
 import           BinaryString
 import           Control.Monad
-import qualified System.Random as R
 import qualified Data.Sequence as S
+import qualified System.Random as R
 
 flipBit :: Int -> Int
 flipBit = (1-)
@@ -20,13 +20,19 @@ maxFitness f a b
   | f b > f a = b
   | otherwise = a
 
+improveRec :: BinaryString -> Int -> (BinaryString -> Int) -> IO BinaryString
+improveRec current iterations fitness
+  | iterations <= 0 = return current
+  | otherwise       = do
+                        print current
+                        offspring <- mutate current
+                        improveRec (maxFitness fitness current offspring) (iterations - 1) fitness
+
 onePlusOneEA :: (BinaryString -> Int) -> Int -> IO BinaryString
 onePlusOneEA f n = do
   gen <- R.newStdGen
-  let best = S.fromList $ take n $ R.randomRs (0,1) gen
-  print best
-  offspring <- mutate best
-  return $ maxFitness f best offspring
+  let initial = S.fromList $ take n $ R.randomRs (0,1) gen
+  improveRec initial 1000 f
   -- replicateM_ 10 $ do
   --   print best
   --   offspring <- mutate best
