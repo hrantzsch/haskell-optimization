@@ -24,15 +24,16 @@ improveRec :: BinaryString -> Int -> (BinaryString -> Int) -> IO BinaryString
 improveRec current iterations fitness
   | iterations <= 0 = return current
   | otherwise       = do
-                        print current
+                        -- print current
                         offspring <- mutate current
-                        improveRec (maxFitness fitness current offspring) (iterations - 1) fitness
+                        improveRec (maxFitness fitness offspring current) (iterations - 1) fitness
 
 onePlusOneEA :: (BinaryString -> Int) -> Int -> IO BinaryString
 onePlusOneEA f n = do
   gen <- R.newStdGen
   let initial = S.fromList $ take n $ R.randomRs (0,1) gen
-  improveRec initial 1000 f
+  print initial
+  improveRec initial 5000 f
   -- replicateM_ 10 $ do
   --   print best
   --   offspring <- mutate best

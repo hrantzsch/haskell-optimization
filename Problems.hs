@@ -17,10 +17,12 @@ binVal bs = sum $ fmap f b
   where f (x,y) = y * 2 ^ x
         b = S.zip (S.fromList [0..S.length bs]) $ S.reverse bs
 
-royalRoads :: BinaryString -> Int -> Int
-royalRoads bs k
+royalRoads :: Int -> BinaryString -> Int
+royalRoads k bs
   | S.null bs = 0
-  | otherwise = allOnes firstK + royalRoads remainder k
+  | otherwise = allOnes firstK + royalRoads k remainder
                   where (firstK, remainder) = S.splitAt k bs
                         allOnes bs | all (==1) $ F.toList bs = 1
                                    | otherwise               = 0
+
+royalRoads5 = royalRoads 5
