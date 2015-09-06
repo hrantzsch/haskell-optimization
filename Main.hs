@@ -7,5 +7,9 @@ main :: IO ()
 main = do
   -- let result = P.oneMax [1,0,0,1,1]
   -- putStrLn $ concatMap show (toInts result)
-  result <- A.onePlusOneEA (P.royalRoads 10) 100
+  let problem = P.leadingOnes -- P.royalRoads 10
+      stringLength = 1000
+      maxIterations = 10000
+  result <- A.optimize problem stringLength maxIterations
   print result
+  putStrLn $ "Fitness: " ++ show (problem result)
