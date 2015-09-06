@@ -9,10 +9,9 @@ flipBit :: Int -> Int
 flipBit = (1-)
 
 flipBinaryString :: BinaryString -> BinaryString -> BinaryString
-flipBinaryString = S.zipWith (-)
+flipBinaryString a b = fmap abs $ S.zipWith (-) a b
 
 mutateRLS :: BinaryString -> IO BinaryString
--- currently RLS, change it later to flip more bits
 mutateRLS bs = do
   gen <- R.newStdGen
   let (index, _) = R.randomR (0,S.length bs-1) gen
@@ -24,7 +23,7 @@ mutateOnePlusOne bs = do
   let floatMask = R.randomRs (0,1) gen :: [Float]
   let prob = 1 / fromIntegral (S.length bs)
   let bitMask = map ((\b -> if b then 1 else 0) . (< prob)) $ take (S.length bs) floatMask
-  putStrLn $ "1+1 EA: mutating " ++ show (sum bitMask) ++ " bit(s)"
+  -- putStrLn $ "1+1 EA: mutating " ++ show (sum bitMask) ++ " bit(s)"
   return $ flipBinaryString bs (S.fromList bitMask)
 
 maxFitness :: (BinaryString -> Int) -> BinaryString -> BinaryString -> BinaryString

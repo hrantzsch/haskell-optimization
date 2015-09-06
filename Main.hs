@@ -5,9 +5,7 @@ import qualified Problems   as P
 
 main :: IO ()
 main = do
-  -- let result = P.oneMax [1,0,0,1,1]
-  -- putStrLn $ concatMap show (toInts result)
-  let problem = P.leadingOnes -- P.royalRoads 10
+  let problem = P.royalRoads5
       stringLength = 1000
       maxIterations = 10000
   result <- A.optimize problem stringLength maxIterations
